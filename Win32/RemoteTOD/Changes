@@ -4,3 +4,9 @@ Revision history for Perl extension Win32::RemoteTOD.
 	- original version; created by h2xs 1.21 with options
 		-O -c -f -n Win32::RemoteTOD -x
 
+1.00  Tue Oct 28 14:17:32 2003
+	- added ppm.zip file
+	- fixed unicode conversion bug
+	- now returns status code instead of hashref.
+	- minor documentation changes
+

@@ -7,7 +7,7 @@ WriteMakefile(
     'PREREQ_PM'			=> {},
     ($] >= 5.005 ? (
 	ABSTRACT_FROM		=> 'RemoteTOD.pm',
-	AUTHOR				=> 'Adam Rich <ar3121@sbc.com>',
+	AUTHOR				=> 'Adam Rich <arich@cpan.org>',
 	) : ()),
     'LIBS'				=> ['netapi32.lib'],
     'DEFINE'			=> '',

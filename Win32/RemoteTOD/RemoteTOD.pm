@@ -13,7 +13,7 @@ our @ISA = qw(Exporter DynaLoader);
 our %EXPORT_TAGS = ();
 our @EXPORT_OK = qw( GetTOD );
 our @EXPORT = qw( GetTOD );
-our $VERSION = '0.01';
+our $VERSION = '1.00';
 
 bootstrap Win32::RemoteTOD $VERSION;
 
@@ -29,11 +29,11 @@ Win32::RemoteTOD - Get the time & timezone of a remote Win32 machine
 	use strict;
 	use Win32::RemoteTOD qw(GetTOD);
 
-	my $Server = 'ntsvr';
-	my $TOD = GetTOD($Server);
+	my $TimeInfo;
+	my $Result = GetTOD('servername', $TimeInfo);
 
-	if (! $TOD) {
-		print "Error: $^E\n";
+	if ($Result) {
+		print "Error: $Result\n";
 		exit 1;
 	}
 
@@ -41,25 +41,25 @@ Win32::RemoteTOD - Get the time & timezone of a remote Win32 machine
 					Thursday Friday Saturday );
 
 	printf("Date/Time is %s %02u/%02u/%02u %02u:%02u:%02u.%02u GMT.\n",
-		$days[$TOD->{weekday}],
-		$TOD->{month},
-		$TOD->{day},
-		$TOD->{year},
-		$TOD->{hours},
-		$TOD->{mins},
-		$TOD->{secs},
-		$TOD->{hunds},
+		$days[$TimeInfo->{weekday}],
+		$TimeInfo->{month},
+		$TimeInfo->{day},
+		$TimeInfo->{year},
+		$TimeInfo->{hours},
+		$TimeInfo->{mins},
+		$TimeInfo->{secs},
+		$TimeInfo->{hunds},
 	);
-	if ($TOD->{timezone} == -1) {
+	if ($TimeInfo->{timezone} == -1) {
 		print "The timezone is undefined.\n";
 	}
-	elsif ($TOD->{timezone} == 0) {
+	elsif ($TimeInfo->{timezone} == 0) {
 		print "The timezone is GMT.\n";
 	}
 	else {
 		printf("The timezone is %u minutes %s of GMT.\n",
-			abs($TOD->{timezone}),
-			$TOD->{timezone} > 0 ? 'west' : 'east',
+			abs($TimeInfo->{timezone}),
+			$TimeInfo->{timezone} > 0 ? 'west' : 'east',
 		);
 	}
 
@@ -67,7 +67,7 @@ Win32::RemoteTOD - Get the time & timezone of a remote Win32 machine
 
 Win32::RemoteTOD is used to retreive the date, time, and timezone from a
 remote Win32 machine.  There is one function, called "GetTOD()" which 
-returns as hashref containing 12 keys as follows (direct from MSDN):
+sets a hashref containing 12 keys as follows (direct from MSDN):
 
 =head2 Hashref keys
 
@@ -103,7 +103,7 @@ Specifies a DWORD value that contains the current second. Valid values are
 
 =item hunds
 
-Specifies a DWORD value that contains the current hundredth second (0.01
+Specifies a DWORD value that contains the current hundredth second (1.00
 second). Valid values are 0 through 99. 
 
 =item timezone
@@ -148,7 +148,7 @@ The single function, GetTOD() is exported by default.
 
 =head1 AUTHOR
 
-Adam Rich, <ar3121@sbc.com>
+Adam Rich, <arich@cpan.org>
 
 =head1 SEE ALSO
 
